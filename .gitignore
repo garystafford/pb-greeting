@@ -1,0 +1,5 @@
+github.com/
+**/main
+.idea/
+build/*
+.DS_Store
