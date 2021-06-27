@@ -1,0 +1,29 @@
+syntax = "proto3";
+package greeting.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/garystafford/pb-greeting/gen/go/greeting/v1";
+
+message Greeting {
+  string id = 1;
+  string service = 2;
+  string message = 3;
+  string created = 4;
+}
+
+
+message GreetingRequest {
+}
+
+message GreetingResponse {
+  repeated Greeting greeting = 1;
+}
+
+service GreetingService {
+  rpc Greeting (GreetingRequest) returns (GreetingResponse) {
+    option (google.api.http) = {
+      get: "/api/greeting"
+    };
+  }
+}

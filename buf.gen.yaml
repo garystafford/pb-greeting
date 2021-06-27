@@ -1,0 +1,18 @@
+version: v1beta1
+plugins:
+  - name: go
+    out: ../protobuf
+    opt:
+      - paths=source_relative
+  - name: go-grpc
+    out: ../protobuf
+    opt:
+      - paths=source_relative
+  - name: grpc-gateway
+    out: ../protobuf
+    opt:
+      - paths=source_relative
+  - name: openapiv2
+    out: ../protobuf
+    opt:
+      - logtostderr=true

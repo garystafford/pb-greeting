@@ -1,90 +1,104 @@
-# Go-based Microservice for Istio Observability Demo
+# Protobuf Files for Istio Observability Demo
 
-Protocol Buffers for set of Go-based, RESTful microservices, which make up this reference distributed system platform, designed to generate service-to-service, service-to-database (MongoDB), and service-to-queue-to-service (RabbitMQ) IPC (inter-process communication).
+Protocol Buffers (Protobuf) files for reference application platform, used in my Istio observability demo blog posts.
 
 ## Commands
 
-```bash
-# reference: https://github.com/grpc-ecosystem/grpc-gateway
+```shell
+go mod tidy
 
-# Required packages
-go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
-go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
-go get -u github.com/golang/protobuf/protoc-gen-go
+buf beta mod update
+buf lint
+buf ls-files
+```
 
-# Generate gRPC stub (.pb.go)
-protoc -I /usr/local/include -I. \
-  -I ${GOPATH}/src \
-  -I ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --go_out=plugins=grpc:. \
-  greeting.proto
+Generates (4) files: go, grpc, grpc gateway, and swagger
 
-# Generate reverse-proxy (.pb.gw.go)
-protoc -I /usr/local/include -I. \
-  -I ${GOPATH}/src \
-  -I ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --grpc-gateway_out=logtostderr=true:. \
-  greeting.proto
+```shell
+buf generate --path greeting/v2
+```
 
-# Generate swagger definitions (.swagger.json)
-protoc -I /usr/local/include -I. \
-  -I ${GOPATH}/src \
-  -I ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --swagger_out=logtostderr=true:. \
-  greeting.proto
+Currently, getting error using `buf`. Use `buf protoc` command below, instead.
 
-# View Swagger doc
+```text
+greeting/v2/greeting.proto:4:8:google/api/annotations.proto: does not exist
+```
+
+Alternative `buf protoc` command.
+
+```shell
+mkdir -p ./gen/go
+mkdir -p ./gen/openapiv2
+
+buf protoc -I . \
+  --openapiv2_out=./gen/openapiv2 --openapiv2_opt=logtostderr=true \
+  --go_out=./gen/go --go_opt=paths=source_relative \
+  --go-grpc_out=./gen/go --go-grpc_opt=paths=source_relative \
+  --grpc-gateway_out=./gen/go --grpc-gateway_opt=paths=source_relative,generate_unbound_methods=true \
+  greeting/v2/greeting.proto
+```
+
+Use Docker to view Swagger doc at <http://localhost:8080/>.
+
+```shell
 docker run -p 8080:8080 -d --name swagger-ui \
-  -e SWAGGER_JSON=/tmp/greeting.swagger.json \
-  -v /Users/garystafford/go-workspace/src/pb-greeting:/tmp swaggerapi/swagger-ui
-  ```
-  
-  ## Output Sample
+  -e SWAGGER_JSON=/tmp/gen/openapiv2/greeting/v2/greeting.swagger.json \
+  -v $(pwd):/tmp swaggerapi/swagger-ui
+```
+
+## Sample Output an Array of Greeting
 
 ```json
 {
   "greeting": [
     {
-        "id": "9f12e095-989f-49aa-80f7-05f27a1ae2ef",
-        "service": "Service-D",
-        "message": "Shalom, from Service-D!",
-        "created": "2019-03-17T16:10:16.197706983Z"
+      "id": "a9afab6a-3e2a-41a6-aec7-7257d2904076",
+      "service": "Service D",
+      "message": "Shalom (שָׁלוֹם), from Service D!",
+      "created": "2021-06-04T14:28:32.695151047Z",
+      "hostname": "service-d-565c775894-vdsjx"
     },
     {
-        "id": "a2ed6cac-88bc-42b5-9d94-7b64a655ead9",
-        "service": "Service-G",
-        "message": "Ahlan, from Service-G!",
-        "created": "2019-03-17T16:10:16.229348021Z"
+      "id": "6d4cc38a-b069-482c-ace5-65f0c2d82713",
+      "service": "Service G",
+      "message": "Ahlan (أهلا), from Service G!",
+      "created": "2021-06-04T14:28:32.814550521Z",
+      "hostname": "service-g-5b846ff479-znpcb"
     },
     {
-        "id": "d5384ee3-1d43-460a-abc8-142e5d5f5b8e",
-        "service": "Service-H",
-        "message": "Ciao, from Service-H!",
-        "created": "2019-03-17T16:10:16.293059651Z"
+      "id": "988757e3-29d2-4f53-87bf-e4ff6fbbb105",
+      "service": "Service H",
+      "message": "Nǐ hǎo (你好), from Service H!",
+      "created": "2021-06-04T14:28:32.947406463Z",
+      "hostname": "service-h-76cb7c8d66-lkr26"
     },
     {
-        "id": "953d654d-5c32-4d5d-9ce1-e158dee3701b",
-        "service": "Service-E",
-        "message": "Bonjour, de Service-E!",
-        "created": "2019-03-17T16:10:16.414109276Z"
+      "id": "966b0bfa-0b63-4e21-96a1-22a76e78f9cd",
+      "service": "Service E",
+      "message": "Bonjour, from Service E!",
+      "created": "2021-06-04T14:28:33.007881464Z",
+      "hostname": "service-e-594d4754fc-pr7tc"
     },
     {
-        "id": "98a73e02-9c4a-443a-a4c9-1f0216d5c099",
-        "service": "Service-B",
-        "message": "Namaste, from Service-B!",
-        "created": "2019-03-17T16:10:16.415805403Z"
+      "id": "c612a228-704f-4562-90c5-33357b12ff8d",
+      "service": "Service B",
+      "message": "Namasté (नमस्ते), from Service B!",
+      "created": "2021-06-04T14:28:33.015985983Z",
+      "hostname": "service-b-697b78cf54-4lk8s"
     },
     {
-        "id": "d5cd62d4-fe79-4b6b-81a9-80d59f3d42c3",
-        "service": "Service-C",
-        "message": "Konnichiwa, from Service-C!",
-        "created": "2019-03-17T16:10:16.420415356Z"
+      "id": "b621bd8a-02ee-4f9b-ac1a-7d91ddad85f5",
+      "service": "Service C",
+      "message": "Konnichiwa (こんにちは), from Service C!",
+      "created": "2021-06-04T14:28:33.042001406Z",
+      "hostname": "service-c-7fd4dd5947-5wcgs"
     },
     {
-        "id": "844ea9c7-b340-4956-9c8b-f28ae42d0f4a",
-        "service": "Service-A",
-        "message": "Hello, from Service-A!",
-        "created": "2019-03-17T16:10:16.4982543Z"
+      "id": "52eac1fa-4d0c-42b4-984b-b65e70afd98a",
+      "service": "Service A",
+      "message": "Hello, from Service A!",
+      "created": "2021-06-04T14:28:33.093380628Z",
+      "hostname": "service-a-6f776d798f-5l5dz"
     }
   ]
 }
