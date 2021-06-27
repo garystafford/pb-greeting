@@ -15,35 +15,18 @@ buf ls-files
 Generates (4) files: go, grpc, grpc gateway, and swagger
 
 ```shell
-buf generate --path greeting/v2
-```
+buf generate -v
 
-Currently, getting error using `buf`. Use `buf protoc` command below, instead.
-
-```text
-greeting/v2/greeting.proto:4:8:google/api/annotations.proto: does not exist
-```
-
-Alternative `buf protoc` command.
-
-```shell
-mkdir -p ./gen/go
-mkdir -p ./gen/openapiv2
-
-buf protoc -I . \
-  --openapiv2_out=./gen/openapiv2 --openapiv2_opt=logtostderr=true \
-  --go_out=./gen/go --go_opt=paths=source_relative \
-  --go-grpc_out=./gen/go --go-grpc_opt=paths=source_relative \
-  --grpc-gateway_out=./gen/go --grpc-gateway_opt=paths=source_relative,generate_unbound_methods=true \
-  greeting/v2/greeting.proto
+# alternately
+buf generate --path proto/greeting/v2 -v
 ```
 
 Use Docker to view Swagger doc at <http://localhost:8080/>.
 
 ```shell
 docker run -p 8080:8080 -d --name swagger-ui \
-  -e SWAGGER_JSON=/tmp/gen/openapiv2/greeting/v2/greeting.swagger.json \
-  -v $(pwd):/tmp swaggerapi/swagger-ui
+  -e SWAGGER_JSON=/tmp/greeting/v2/greeting.swagger.json \
+  -v ~/Documents/projects/protobuf:/tmp swaggerapi/swagger-ui
 ```
 
 ## Sample Output an Array of Greeting
