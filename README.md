@@ -15,10 +15,19 @@ buf ls-files
 Generates (4) files: go, grpc, grpc gateway, and swagger
 
 ```shell
+exort GOBIN=/Users/garystafford/go/bin
 buf generate -v
 
 # alternately
 buf generate --path proto/greeting/v2 -v
+
+buf protoc -I . \
+  --openapiv2_out=../protobuf --openapiv2_opt=logtostderr=true \
+  --go_out=../protobuf --go_opt=paths=source_relative \
+  --go-grpc_out=../protobuf --go-grpc_opt=paths=source_relative \
+  --grpc-gateway_out=../protobuf --grpc-gateway_opt=paths=source_relative,generate_unbound_methods=true \
+  proto/greeting/v2/greeting.proto
+
 ```
 
 Use Docker to view Swagger doc at <http://localhost:8080/>.
