@@ -2,6 +2,21 @@
 
 Protocol Buffers (Protobuf) files for reference application platform, used in my Istio observability demo blog posts.
 
+## Older Version of GRPC-Gateway
+Due to below error, I am currently using the older [v1.16.0](https://github.com/grpc-ecosystem/grpc-gateway/releases/tag/v1.16.0) of gRPC-Gateway.
+
+```text
+github.com/grpc-ecosystem/grpc-gateway v1.16.0
+```
+
+```text
+`../../../../../go/pkg/mod/github.com/garystafford/protobuf@v0.0.0-20210628012658-a5a7cd0949b2/greeting/v2/greeting.pb.gw.go:39:2: cannot use msg (type *GreetingResponse) as type protoreflect.ProtoMessage in return argument:
+	*GreetingResponse does not implement protoreflect.ProtoMessage (missing ProtoReflect method)
+
+../../../../../go/pkg/mod/github.com/garystafford/protobuf@v0.0.0-20210628012658-a5a7cd0949b2/greeting/v2/greeting.pb.gw.go:48:2: cannot use msg (type *GreetingResponse) as type protoreflect.ProtoMessage in return argument:
+	*GreetingResponse does not implement protoreflect.ProtoMessage (missing ProtoReflect method)`
+```
+
 ## Commands
 
 ```shell
