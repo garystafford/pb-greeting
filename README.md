@@ -3,7 +3,7 @@
 Protocol Buffers (Protobuf) files for reference application platform, used in my Istio observability demo blog posts.
 
 ## Older Version of GRPC-Gateway
-Due to below error, I am currently using the older [v1.16.0](https://github.com/grpc-ecosystem/grpc-gateway/releases/tag/v1.16.0) of gRPC-Gateway.
+Due to below `missing ProtoReflect method` error, I am currently using the older [v1.16.0](https://github.com/grpc-ecosystem/grpc-gateway/releases/tag/v1.16.0) of gRPC-Gateway until the issue is resolved.
 
 ```text
 github.com/grpc-ecosystem/grpc-gateway v1.16.0
@@ -30,19 +30,20 @@ buf ls-files
 Generates (4) files: go, grpc, grpc gateway, and swagger
 
 ```shell
-exort GOBIN=/Users/garystafford/go/bin
 buf generate -v
 
 # alternately
 buf generate --path proto/greeting/v2 -v
 
+# using protoc instead
 buf protoc -I . \
   --openapiv2_out=../protobuf --openapiv2_opt=logtostderr=true \
   --go_out=../protobuf --go_opt=paths=source_relative \
   --go-grpc_out=../protobuf --go-grpc_opt=paths=source_relative \
   --grpc-gateway_out=../protobuf --grpc-gateway_opt=paths=source_relative,generate_unbound_methods=true \
   proto/greeting/v2/greeting.proto
-  
+
+# for python
 python3 -m grpc_tools.protoc -I . \
   --python_out=../protobuf \
   --grpc_python_out=../protobuf \
