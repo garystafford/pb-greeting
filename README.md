@@ -27,10 +27,6 @@ buf protoc -I . \
   --go-grpc_out=../protobuf --go-grpc_opt=paths=source_relative \
   --grpc-gateway_out=../protobuf --grpc-gateway_opt=paths=source_relative,generate_unbound_methods=true \
   proto/greeting/v2/greeting.proto
-
-buf protoc -I . \
-  --go_out=../protobuf --go_opt=paths=source_relative \
-  proto/greeting/v2/greeting.proto
   
 python3 -m grpc_tools.protoc -I . \
   --python_out=../protobuf \
