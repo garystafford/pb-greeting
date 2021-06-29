@@ -28,6 +28,16 @@ buf protoc -I . \
   --grpc-gateway_out=../protobuf --grpc-gateway_opt=paths=source_relative,generate_unbound_methods=true \
   proto/greeting/v2/greeting.proto
 
+buf protoc -I . \
+  --go_out=../protobuf --go_opt=paths=source_relative \
+  proto/greeting/v2/greeting.proto
+  
+python3 -m grpc_tools.protoc -I . \
+  --python_out=../protobuf \
+  --grpc_python_out=../protobuf \
+  --grpc-gateway_out=../protobuf --grpc-gateway_opt=paths=source_relative,generate_unbound_methods=true \
+  proto/greeting/v2/greeting.proto
+
 ```
 
 Use Docker to view Swagger doc at <http://localhost:8080/>.
