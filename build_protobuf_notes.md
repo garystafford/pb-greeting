@@ -1,4 +1,4 @@
-# Protocol Buffers
+# Build Protocol Buffers using Docker
 
 Building the protobufs on my local Mac results in the below error. It is caused by not having the latest compiler.
 However, I am not able to fix the issue locally. Therefore, to solve the problem, I use a Docker container.
@@ -36,6 +36,11 @@ wget https://github.com/bufbuild/buf/releases/download/${bufbuilder}/buf-Linux-a
 
 git clone https://github.com/garystafford/pb-greeting.git \
     && cd pb-greeting/
+
+buf beta mod update
+
+buf lint
+buf ls-files
 
 buf generate --path proto/greeting/v2 -v
 ```

@@ -4,6 +4,10 @@ Protocol Buffers (Protobuf) files for reference application platform, used in my
 
 ## Commands
 
+Generates (4) files: go, grpc, grpc gateway, and swagger
+
+See [Build Protocol Buffers using Docker](./build_protobuf_notes.md).
+
 ```shell
 go mod tidy
 
@@ -11,8 +15,6 @@ buf beta mod update
 buf lint
 buf ls-files
 ```
-
-Generates (4) files: go, grpc, grpc gateway, and swagger
 
 ```shell
 buf generate -v
@@ -36,6 +38,8 @@ python3 -m grpc_tools.protoc -I . \
   proto/greeting/v2/greeting.proto
 
 ```
+
+## Swagger
 
 Use Docker to view Swagger doc at <http://localhost:8080/>.
 
