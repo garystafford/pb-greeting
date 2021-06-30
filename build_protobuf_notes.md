@@ -13,7 +13,8 @@ However, I am not able to fix the issue locally. Therefore, to solve the problem
 ## Builder Container
 
 ```shell
-mkdir build-protobufs && cd build-protobufs
+mkdir build-protobufs \
+  && cd build-protobufs
 docker run --rm -it -v "$PWD":/tmp golang:latest bash
 ```
 
