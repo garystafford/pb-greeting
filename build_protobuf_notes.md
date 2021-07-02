@@ -42,11 +42,12 @@ buf beta mod update
 buf lint
 buf ls-files
 
-buf generate --path proto/greeting/v2 -v
+buf generate --path proto/greeting/v3 -v
 ```
 
 Copy the resulting files into the `protobuf` project and commit to GitHub.
 
 ```shell
-rm -rf ~/Documents/projects/build-protobufs
+rm -rf pb-greeting
+rm -rf protobuf
 ```
