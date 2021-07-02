@@ -1,9 +1,9 @@
 syntax = "proto3";
-package greeting.v2;
+package greeting.v3;
 
 import "google/api/annotations.proto";
 
-option go_package = "github.com/garystafford/pb-greeting/gen/go/greeting/v2";
+option go_package = "github.com/garystafford/pb-greeting/gen/go/greeting/v3";
 
 message Greeting {
   string id = 1;
@@ -14,6 +14,7 @@ message Greeting {
 }
 
 message GreetingRequest {
+  Greeting greeting = 1;
 }
 
 message GreetingResponse {
