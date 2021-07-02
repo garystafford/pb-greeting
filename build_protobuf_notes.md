@@ -13,8 +13,9 @@ However, I am not able to fix the issue locally. Therefore, to solve the problem
 ## Builder Container
 
 ```shell
-mkdir build-protobufs \
-  && cd build-protobufs
+mkdir build-protobufs
+cd build-protobufs
+
 docker run --rm -it -v "$PWD":/tmp golang:latest bash
 ```
 
@@ -23,16 +24,18 @@ docker run --rm -it -v "$PWD":/tmp golang:latest bash
 ```shell
 cd /tmp
 
+# 1x only
+export bufbuilder=v0.43.2
+wget https://github.com/bufbuild/buf/releases/download/${bufbuilder}/buf-Linux-aarch64.tar.gz \
+    && tar -xf buf-Linux-aarch64.tar.gz \
+    && rm -rf buf-Linux-aarch64.tar.gz
+
+export PATH="/tmp/buf/bin:$PATH"
+
 go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest \
     && go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest \
     && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
     && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-
-export bufbuilder=v0.43.2
-wget https://github.com/bufbuild/buf/releases/download/${bufbuilder}/buf-Linux-aarch64.tar.gz \
-    && tar -xf buf-Linux-aarch64.tar.gz \
-    && rm -rf buf-Linux-aarch64.tar.gz \
-    && export PATH="/tmp/buf/bin:$PATH"
 
 git clone https://github.com/garystafford/pb-greeting.git \
     && cd pb-greeting/
@@ -42,6 +45,9 @@ buf beta mod update
 buf lint
 buf ls-files
 
+buf generate
+
+# or
 buf generate --path proto/greeting/v3 -v
 ```
 
